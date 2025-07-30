@@ -1,104 +1,322 @@
-/* CSS Variables for Theme Management */
+/* --- Theme & Palette --- */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
-}
+  /* Custom palette */
+  --primary: #1976d2;      /* From container details */
+  --secondary: #424242;
+  --accent: #ffca28;
+  --bg-primary-light: #fff;
+  --bg-primary-dark: #1a1a1a;
+  --bg-panel: #f8f9fa;
+  --border-color: #e0e0e0;
+  --text: #222;
+  --text-light: #fff;
+  --shadow: 0 8px 32px 0 rgba(31,38,135,0.05);
 
+  /* Fallbacks for dark mode toggle */
+  --theme-bg: var(--bg-primary-light);
+  --theme-text: var(--text);
+}
 [data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+  --theme-bg: var(--bg-primary-dark);
+  --theme-text: var(--text-light);
+  --bg-panel: #222733;
+  --border-color: #343545;
 }
 
+/* --- Layout --- */
 .App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+  background: var(--theme-bg);
+  color: var(--theme-text);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.ttt-header {
+  padding: 2rem 0 1rem 0;
+  text-align: center;
   position: relative;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.ttt-title {
+  font-size: 2.2rem;
+  margin: 0;
+  letter-spacing: 1px;
+  font-family: inherit;
+  font-weight: 700;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
+.primary-color { color: var(--primary); }
+.accent-color { color: var(--accent); }
+
+/* --- Centered main content with responsive panels --- */
+.ttt-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.ttt-game-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.ttt-board-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 330px;
+  max-width: 500px;
+  background: var(--bg-panel);
+  padding: 2rem 2.5rem 1.5rem 2.5rem;
+  border-radius: 1.3rem;
+  box-shadow: var(--shadow);
+}
+
+.ttt-history-section {
+  min-width: 170px;
+  background: var(--bg-panel);
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow);
+  margin-top: 0.4rem;
+}
+
+/* --- Board styles --- */
+.ttt-board {
+  display: grid;
+  grid-template-rows: repeat(3, 64px);
+  grid-template-columns: repeat(3, 64px);
+  gap: 7px;
+  margin-bottom: 1.1rem;
+}
+
+.ttt-board-row {
+  display: contents;
+}
+
+.ttt-square {
+  width: 64px;
+  height: 64px;
+  font-size: 2.3rem;
+  color: var(--secondary);
+  background: var(--theme-bg);
+  border: 2.5px solid var(--border-color);
+  border-radius: 13px;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  outline: none;
+  font-weight: 700;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.ttt-square:active {
+  background: var(--primary);
+  color: var(--text-light);
+}
+.ttt-square.highlight {
+  background: var(--accent);
+  color: var(--secondary);
+}
+
+.x-color { color: var(--primary); font-weight: 700; }
+.o-color { color: var(--secondary); font-weight: 700; }
+
+/* --- Control Panel --- */
+.ttt-control-panel {
+  width: 100%;
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ttt-modes {
+  display: flex;
+  gap: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.ttt-mode-btn {
+  padding: 0.55rem 1.3rem;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  border-radius: 15px;
+  background: var(--secondary);
+  color: var(--accent);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.26s, color 0.26s, box-shadow 0.2s;
+  outline: none;
+}
+.ttt-mode-btn.selected, .ttt-mode-btn:active {
+  background: var(--primary);
+  color: var(--theme-bg);
+  box-shadow: 0 2px 10px 0 rgba(25, 118, 210, 0.09);
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.ttt-status {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.ttt-restart-btn {
+  margin-top: 0.1rem;
+  padding: 0.54rem 2.1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+  box-shadow: 0 2px 8px 0 rgba(255, 202, 40, 0.08);
+}
+.ttt-restart-btn:hover, .ttt-restart-btn:focus {
+  background: var(--primary);
+  color: var(--bg-primary-light);
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
+/* --- History Styles --- */
+.ttt-history-panel {
+  text-align: left;
+}
+.ttt-history-panel h3 {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: var(--primary);
+  margin-bottom: 0.4em;
+}
+.ttt-history-panel ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+.ttt-history-btn {
+  background: none;
+  border: none;
+  color: var(--secondary);
+  font-size: 0.95em;
+  padding: 0.18em 0.1em;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s;
+}
+.ttt-history-btn.selected, .ttt-history-btn:active {
+  color: var(--primary);
+  font-weight: 600;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* --- Footer --- */
+.ttt-footer {
+  margin-top: auto;
+  padding: 0.8rem 0 1rem 0;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--secondary);
+}
+.footer-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--accent); }
+
+/* --- Theme Toggle Button (existing, refined) --- */
+.theme-toggle {
+  position: absolute;
+  top: 14px;
+  right: 26px;
+  background-color: var(--accent);
+  color: var(--secondary);
+  border: none;
+  border-radius: 6px;
+  padding: 7px 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.24s;
+  box-shadow: 0 2px 8px rgba(255,202,40,0.13);
+}
+
+.theme-toggle:hover, .theme-toggle:focus {
+  background-color: var(--secondary);
+  color: var(--accent);
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 900px) {
+  .ttt-game-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
   }
-  to {
-    transform: rotate(360deg);
+  .ttt-history-section {
+    margin-top: 1.2rem;
+  }
+  .ttt-board-section {
+    min-width: 250px;
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
   }
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+  .ttt-header {
+    padding: 1.1rem 0 0.2rem 0;
+  }
+  .ttt-title {
+    font-size: 1.25rem;
+  }
+  .ttt-board {
+    grid-template-rows: repeat(3, 44px);
+    grid-template-columns: repeat(3, 44px);
+    gap: 4px;
+  }
+  .ttt-board-section {
+    min-width: 0;
+    padding: 0.6rem 2px 0.4rem 2px;
+    max-width: 95vw;
+  }
+  .ttt-history-section {
+    min-width: 110px;
+    padding: 0.4rem 0.5rem;
+  }
+  .ttt-modes {
+    gap: 0.4rem;
+  }
+  .ttt-control-panel {
+    margin-top: 1.1rem;
+  }
+  .ttt-restart-btn, .ttt-mode-btn {
+    padding: 0.36rem 1em;
+    font-size: 0.92em;
+    border-radius: 10px;
+  }
+  .ttt-status {
+    font-size: 1em;
+    min-height: 1em;
+  }
   .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+    top: 4px;
+    right: 11px;
+    padding: 5px 8px;
+    font-size: 0.92em;
   }
 }
